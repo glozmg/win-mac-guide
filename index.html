@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Windows 사용자가 macOS에 빠르게 적응하기 위한 단축키, Finder, 창 관리, Karabiner-Elements 활용 가이드" />
+  <meta name="theme-color" content="#f7f7fb" />
+  <title>Windows → macOS 적응 가이드</title>
+  <style>
+:root {
+  --bg: #f7f7fb;
+  --surface: rgba(255,255,255,.88);
+  --surface-solid: #ffffff;
+  --text: #1b1d24;
+  --muted: #666b78;
+  --border: #e7e7ef;
+  --accent: #5b5ce2;
+  --accent-2: #8357d8;
+  --accent-soft: #efefff;
+  --green: #26966a;
+  --orange: #e58c38;
+  --red: #e65d5d;
+  --shadow: 0 18px 50px rgba(43, 43, 76, .08);
+  --radius-xl: 28px;
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --shell: min(1120px, calc(100% - 40px));
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(121, 105, 232, .10), transparent 28rem),
+    radial-gradient(circle at 90% 12%, rgba(91, 190, 178, .09), transparent 26rem),
+    var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Pretendard, "Noto Sans KR", sans-serif;
+  line-height: 1.62;
+  letter-spacing: -0.018em;
+}
+
+a { color: inherit; }
+button, input { font: inherit; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: -60px;
+  z-index: 1000;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--text);
+  color: var(--bg);
+  text-decoration: none;
+  transition: top .2s ease;
+}
+.skip-link:focus { top: 16px; }
+
+.shell { width: var(--shell); margin: 0 auto; }
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+.nav-wrap { min-height: 68px; display: flex; align-items: center; gap: 24px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; white-space: nowrap; }
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  font-size: 20px;
+  box-shadow: 0 8px 22px rgba(91, 92, 226, .25);
+}
+.nav-links { margin-left: auto; display: flex; gap: 6px; }
+.nav-links a { padding: 8px 11px; color: var(--muted); text-decoration: none; font-size: 14px; border-radius: 10px; }
+.nav-links a:hover { background: var(--surface); color: var(--text); }
+.icon-button {
+  width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 13px;
+  background: var(--surface); color: var(--text); cursor: pointer;
+}
+
+.hero { padding: 88px 0 56px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr); gap: 56px; align-items: center; }
+.eyebrow { margin: 0 0 12px; color: var(--accent); font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+h1 { margin: 0; font-size: clamp(42px, 6vw, 72px); line-height: 1.04; letter-spacing: -.055em; }
+h1 span { background: linear-gradient(120deg, var(--accent), var(--accent-2)); background-clip: text; -webkit-background-clip: text; color: transparent; }
+.hero-copy { max-width: 720px; margin: 24px 0 0; color: var(--muted); font-size: 18px; line-height: 1.75; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+.button { display: inline-flex; align-items: center; justify-content: center; padding: 12px 17px; border-radius: 14px; text-decoration: none; font-weight: 750; }
+.button.primary { color: white; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 12px 30px rgba(91,92,226,.25); }
+.button.secondary { background: var(--surface); border: 1px solid var(--border); }
+
+.hero-card {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  transform: rotate(1deg);
+}
+.hero-card-head { display: flex; gap: 7px; margin-bottom: 25px; }
+.dot { width: 11px; height: 11px; border-radius: 50%; display: block; }
+.dot.red { background: #ff5f57; } .dot.yellow { background: #febc2e; } .dot.green { background: #28c840; }
+.mini-label { margin: 0 0 12px; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.quick-row { display: flex; align-items: center; gap: 7px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.quick-row:last-child { border-bottom: 0; }
+.quick-row span:first-child { margin-right: auto; font-size: 14px; font-weight: 700; }
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 2px 9px;
+  border: 1px solid color-mix(in srgb, var(--border) 65%, #c4c5cf);
+  border-bottom-width: 2px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface-solid) 94%, var(--accent-soft));
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: .82em;
+  font-weight: 720;
+  line-height: 1.1;
+  white-space: nowrap;
+  box-shadow: 0 1px 0 rgba(0,0,0,.03);
+}
+
+.utility-bar { padding: 8px 0 18px; }
+.utility-inner { display: flex; align-items: center; gap: 14px; padding: 12px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); box-shadow: 0 10px 30px rgba(43,43,76,.05); }
+.search-box { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 240px; padding: 0 12px; border-radius: 13px; background: color-mix(in srgb, var(--bg) 65%, var(--surface-solid)); }
+.search-box span { color: var(--muted); font-size: 22px; }
+.search-box input { width: 100%; padding: 11px 0; border: 0; outline: 0; color: var(--text); background: transparent; }
+.search-box input::placeholder { color: color-mix(in srgb, var(--muted) 70%, transparent); }
+.filter-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { padding: 9px 12px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 750; }
+.pill:hover, .pill.is-active { color: var(--text); background: var(--accent-soft); }
+
+.section { padding: 72px 0 20px; scroll-margin-top: 74px; }
+.section-heading { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); gap: 40px; align-items: end; margin-bottom: 28px; }
+.section-heading.compact { align-items: start; }
+.section-heading h2 { margin: 0; font-size: clamp(29px, 4vw, 44px); line-height: 1.15; letter-spacing: -.04em; }
+.section-heading > p { margin: 0 0 5px; color: var(--muted); }
+
+.compare-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: center; margin-bottom: 22px; }
+.compare-card { padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); }
+.compare-card.accent { background: linear-gradient(135deg, color-mix(in srgb, var(--accent-soft) 75%, var(--surface-solid)), var(--surface-solid)); }
+.compare-card strong { display: block; margin-top: 12px; font-size: 27px; letter-spacing: -.035em; }
+.compare-card p { margin: 5px 0 16px; color: var(--muted); }
+.os-label { display: inline-flex; padding: 5px 9px; border-radius: 999px; font-size: 12px; font-weight: 800; }
+.os-label.windows { background: #eaf4ff; color: #27659e; }
+.os-label.mac { background: var(--accent-soft); color: var(--accent); }
+.shortcut-line { display: flex; flex-wrap: wrap; gap: 6px; }
+.equals { color: var(--muted); font-size: 24px; }
+
+.card-grid { display: grid; gap: 16px; }
+.card-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.card-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.info-card {
+  position: relative;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: 0 8px 26px rgba(43,43,76,.035);
+}
+.info-card.feature { padding-top: 26px; }
+.info-card h3 { margin: 16px 0 7px; font-size: 20px; letter-spacing: -.025em; }
+.info-card p { margin: 0; color: var(--muted); }
+.icon-bubble { display: grid; place-items: center; width: 45px; height: 45px; border-radius: 15px; color: var(--accent); background: var(--accent-soft); font-weight: 900; }
+.windows-analogy { display: flex; align-items: center; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border); }
+.windows-analogy span { margin-right: auto; color: var(--muted); font-size: 12px; font-weight: 700; }
+.badge { display: inline-flex; padding: 5px 9px; border-radius: 999px; background: #e9f7f0; color: var(--green); font-size: 11px; font-weight: 850; }
+.badge.dark { background: rgba(255,255,255,.13); color: #fff; }
+.tip { margin-top: 16px; padding: 11px 12px; border-radius: 12px; color: color-mix(in srgb, var(--text) 75%, var(--muted)); background: color-mix(in srgb, var(--accent-soft) 60%, transparent); font-size: 13px; }
+.tip.warning { background: #fff3e6; color: #8a551e; }
+
+.shortcut-table { overflow: hidden; margin-top: 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); }
+.table-head, .table-row { display: grid; grid-template-columns: 1.2fr .9fr 1.1fr; gap: 10px; align-items: center; min-height: 57px; padding: 10px 18px; }
+.table-head { background: color-mix(in srgb, var(--accent-soft) 58%, var(--surface-solid)); color: var(--muted); font-size: 12px; font-weight: 800; }
+.table-row + .table-row { border-top: 1px solid var(--border); }
+.table-row > span:first-child { font-weight: 720; }
+.muted { color: var(--muted); font-size: 13px; }
+.callout { display: flex; gap: 10px; margin-top: 14px; padding: 14px 16px; border-radius: 15px; color: #7b551f; background: #fff6e8; font-size: 14px; }
+
+.recipe-card { display: flex; justify-content: space-between; gap: 30px; align-items: center; margin-top: 16px; padding: 24px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #232535, #30334a); color: white; box-shadow: var(--shadow); }
+.recipe-card h3 { margin: 0 0 6px; font-size: 22px; }
+.recipe-card p { margin: 0; color: rgba(255,255,255,.68); }
+.recipe-card .mini-label { color: rgba(255,255,255,.48); }
+.recipe-card kbd { background: rgba(255,255,255,.09); color: white; border-color: rgba(255,255,255,.17); }
+.flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.folder { padding: 6px 10px; border-radius: 9px; background: rgba(255,255,255,.09); font-size: 13px; }
+
+.recommendation-banner { display: grid; grid-template-columns: .75fr 1.25fr; gap: 30px; align-items: center; margin-bottom: 16px; padding: 26px; border-radius: var(--radius-xl); color: #fff; background: linear-gradient(135deg, #5d58de, #8159d8 58%, #5b9ab7); box-shadow: 0 20px 50px rgba(91, 92, 226, .20); }
+.recommendation-banner h3 { margin: 12px 0 0; font-size: 27px; letter-spacing: -.035em; }
+.preset-list { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+.preset-list > div { display: grid; grid-template-columns: auto 20px 1fr; gap: 5px; align-items: center; padding: 10px 11px; border-radius: 12px; background: rgba(255,255,255,.10); }
+.preset-list kbd { color: white; background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.17); }
+.preset-list span { opacity: .6; text-align: center; }
+.preset-list strong { font-size: 13px; }
+.mini-flow { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; margin-top: 16px; }
+.mini-flow span { padding: 5px 8px; border-radius: 8px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 800; }
+.do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.do-card, .dont-card { padding: 21px 23px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--surface); }
+.do-card { box-shadow: inset 4px 0 0 #56b78a; }
+.dont-card { box-shadow: inset 4px 0 0 #e7a453; }
+.do-title { font-weight: 850; }
+.do-dont ul { margin: 12px 0 0; padding-left: 20px; color: var(--muted); }
+.do-dont li + li { margin-top: 5px; }
+
+.cheat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.cheat-item { display: grid; gap: 9px; padding: 17px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); }
+.cheat-item span { color: var(--muted); font-size: 13px; font-weight: 700; }
+.cheat-item kbd { justify-self: start; font-size: 14px; }
+.cheat-item small { color: color-mix(in srgb, var(--muted) 70%, transparent); }
+
+.sources { padding-bottom: 70px; }
+.source-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.source-list a { padding: 14px 15px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); color: var(--muted); text-decoration: none; font-size: 13px; }
+.source-list a:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, var(--border)); }
+
+.no-results { padding: 40px 0 80px; }
+.empty-card { padding: 35px; text-align: center; border: 1px dashed var(--border); border-radius: var(--radius-xl); background: var(--surface); }
+.empty-card p { margin-bottom: 0; color: var(--muted); }
+
+.site-footer { padding: 28px 0; border-top: 1px solid var(--border); }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.footer-inner div { display: flex; flex-direction: column; }
+.footer-inner span { color: var(--muted); font-size: 12px; }
+.footer-inner a { color: var(--muted); text-decoration: none; font-size: 13px; }
+
+.search-hidden { display: none !important; }
+
+html[data-theme="dark"] {
+  --bg: #111218;
+  --surface: rgba(27,29,39,.88);
+  --surface-solid: #1b1d27;
+  --text: #f2f2f5;
+  --muted: #a6a9b5;
+  --border: #2e303c;
+  --accent: #9696ff;
+  --accent-2: #bd8cff;
+  --accent-soft: #2a2947;
+  --shadow: 0 18px 50px rgba(0,0,0,.22);
+}
+html[data-theme="dark"] .os-label.windows { background: #172b3d; color: #8fcaff; }
+html[data-theme="dark"] .callout { background: #362917; color: #e5bd7d; }
+html[data-theme="dark"] .tip.warning { background: #382819; color: #e5b778; }
+
+@media (max-width: 900px) {
+  :root { --shell: min(100% - 28px, 760px); }
+  .hero { padding-top: 60px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 30px; }
+  .hero-card { transform: none; }
+  .section-heading { grid-template-columns: 1fr; gap: 10px; }
+  .card-grid.three, .source-list { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .recommendation-banner { grid-template-columns: 1fr; }
+  .cheat-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .utility-inner { align-items: stretch; flex-direction: column; }
+  .filter-pills { overflow-x: auto; flex-wrap: nowrap; }
+}
+
+@media (max-width: 640px) {
+  :root { --shell: calc(100% - 22px); }
+  body { font-size: 15px; }
+  .nav-links { display: none; }
+  .brand { margin-right: auto; }
+  .hero { padding: 45px 0 34px; }
+  h1 { font-size: clamp(38px, 13vw, 52px); }
+  .hero-copy { font-size: 16px; }
+  .section { padding-top: 54px; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .equals { transform: rotate(90deg); justify-self: center; }
+  .card-grid.three, .card-grid.two, .source-list, .do-dont { grid-template-columns: 1fr; }
+  .table-head, .table-row { grid-template-columns: 1.05fr .9fr 1fr; padding-inline: 12px; }
+  .recipe-card { align-items: flex-start; flex-direction: column; }
+  .flow { justify-content: flex-start; }
+  .preset-list { grid-template-columns: 1fr; }
+  .cheat-grid { grid-template-columns: 1fr 1fr; }
+  .recommendation-banner { padding: 22px; }
+  .footer-inner { align-items: flex-start; }
+}
+
+@media (max-width: 430px) {
+  .cheat-grid { grid-template-columns: 1fr; }
+  .table-head, .table-row { grid-template-columns: 1fr; gap: 5px; }
+  .table-head { display: none; }
+  .table-row { padding: 14px; }
+  .table-row > span:first-child { margin-bottom: 4px; }
+  .hero-actions .button { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+}
+
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="#top" aria-label="처음으로">
+        <span class="brand-mark">⌘</span>
+        <span>Win → Mac Guide</span>
+      </a>
+      <nav class="nav-links" aria-label="주요 메뉴">
+        <a href="#essentials">핵심</a>
+        <a href="#finder">Finder</a>
+        <a href="#karabiner">Karabiner</a>
+      </nav>
+      <button class="icon-button" id="themeToggle" type="button" aria-label="다크 모드 전환" title="테마 전환">
+        <span aria-hidden="true">◐</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow">2026.09 · macOS 27 Golden Gate 기준</p>
+          <h1>Windows 사용자를 위한<br /><span>macOS 적응 치트시트</span></h1>
+          <p class="hero-copy">
+            Windows에서 하던 일을 Mac에서는 어떻게 하는지, 익숙한 기능과 단축키를 나란히 비교했습니다.
+            개발자가 자주 쓰는 Finder·창 관리·텍스트 편집과 Karabiner-Elements 활용까지 한 번에 정리했습니다.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#essentials">핵심부터 보기</a>
+            <a class="button secondary" href="#karabiner">Karabiner 설정 보기</a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="가장 먼저 외울 단축키">
+          <div class="hero-card-head">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          </div>
+          <p class="mini-label">먼저 이것만</p>
+          <div class="quick-row"><span>복사 / 붙여넣기</span><kbd>⌘ C</kbd><kbd>⌘ V</kbd></div>
+          <div class="quick-row"><span>앱 전환</span><kbd>⌘ Tab</kbd></div>
+          <div class="quick-row"><span>검색 / 실행</span><kbd>⌘ Space</kbd></div>
+          <div class="quick-row"><span>앱 종료</span><kbd>⌘ Q</kbd></div>
+          <div class="quick-row"><span>파일 미리보기</span><kbd>Space</kbd></div>
+          <div class="quick-row"><span>영역 캡처</span><kbd>⇧ ⌘ 4</kbd></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="utility-bar" aria-label="가이드 검색">
+      <div class="shell utility-inner">
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="guideSearch" type="search" placeholder="예: 파일 이동, Alt Tab, 한영, Caps Lock" autocomplete="off" />
+        </label>
+        <div class="filter-pills" role="group" aria-label="항목 필터">
+          <button class="pill is-active" data-filter="all" type="button">전체</button>
+          <button class="pill" data-filter="mac" type="button">macOS</button>
+          <button class="pill" data-filter="dev" type="button">개발자</button>
+          <button class="pill" data-filter="karabiner" type="button">Karabiner</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="essentials">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">01 · Mental model</p>
+          <h2>Windows 감각을 Mac에 연결하기</h2>
+        </div>
+        <p>처음에는 키 이름보다 “Windows에서 하던 행동”을 기준으로 외우는 편이 빠릅니다.</p>
+      </div>
+
+      <div class="compare-grid searchable" data-tags="mac dev">
+        <article class="compare-card">
+          <div class="os-label windows">Windows</div>
+          <strong>Ctrl</strong>
+          <p>복사·붙여넣기·저장 등 앱의 기본 단축키</p>
+          <div class="shortcut-line"><kbd>Ctrl C</kbd><kbd>Ctrl V</kbd></div>
+        </article>
+        <div class="equals" aria-hidden="true">→</div>
+        <article class="compare-card accent">
+          <div class="os-label mac">macOS</div>
+          <strong>⌘ Command</strong>
+          <p>대부분의 앱 기본 단축키는 Command로 이동합니다.</p>
+          <div class="shortcut-line"><kbd>⌘ C</kbd><kbd>⌘ V</kbd></div>
+        </article>
+      </div>
+
+      <div class="card-grid three">
+        <article class="info-card searchable" data-tags="mac" data-search="Alt Tab 앱 전환 창 전환 command tab">
+          <div class="icon-bubble">↔</div>
+          <h3>앱 전환과 창 전환은 분리</h3>
+          <p><kbd>⌘ Tab</kbd>은 앱 단위입니다. 같은 앱의 여러 창 사이를 이동하려면 <kbd>⌘ `</kbd>을 씁니다.</p>
+          <div class="windows-analogy"><span>Windows</span><kbd>Alt Tab</kbd></div>
+        </article>
+
+        <article class="info-card searchable" data-tags="mac" data-search="Alt F4 창 닫기 앱 종료 command q w">
+          <div class="icon-bubble">×</div>
+          <h3>창 닫기 ≠ 앱 종료</h3>
+          <p><kbd>⌘ W</kbd>는 창/탭을 닫고, <kbd>⌘ Q</kbd>가 앱 자체를 종료합니다. 빨간 버튼만 눌러서는 앱이 남아 있을 수 있습니다.</p>
+          <div class="windows-analogy"><span>Windows Alt+F4 대응</span><kbd>⌘ Q</kbd></div>
+        </article>
+
+        <article class="info-card searchable" data-tags="mac" data-search="Win S PowerToys Run Spotlight 검색 실행 계산 command space">
+          <div class="icon-bubble">⌕</div>
+          <h3>Spotlight를 런처처럼</h3>
+          <p><kbd>⌘ Space</kbd>로 앱 실행, 파일 검색, 계산과 시스템 기능 접근을 시작합니다. 시작 메뉴 검색보다 자주 쓰게 되는 진입점입니다.</p>
+          <div class="windows-analogy"><span>Windows</span><kbd>Win S</kbd></div>
+        </article>
+
+        <article class="info-card searchable" data-tags="mac" data-search="Win Tab Mission Control 작업 보기 가상 데스크톱">
+          <div class="icon-bubble">▦</div>
+          <h3>Mission Control</h3>
+          <p>열린 창 전체를 보고 싶다면 <kbd>Control ↑</kbd>. 데스크톱 간 이동은 <kbd>Control ←</kbd> / <kbd>Control →</kbd>입니다.</p>
+          <div class="windows-analogy"><span>Windows</span><kbd>Win Tab</kbd></div>
+        </article>
+
+        <article class="info-card searchable" data-tags="mac" data-search="Win L 화면 잠금 lock">
+          <div class="icon-bubble">⌁</div>
+          <h3>화면 잠금</h3>
+          <p>자리에서 일어날 때는 <kbd>Control ⌘ Q</kbd>. 회사 환경이라면 가장 먼저 손에 익혀둘 만한 단축키입니다.</p>
+          <div class="windows-analogy"><span>Windows</span><kbd>Win L</kbd></div>
+        </article>
+
+        <article class="info-card searchable" data-tags="mac dev" data-search="이모지 emoji win dot control command space fn e">
+          <div class="icon-bubble">☺</div>
+          <h3>이모지·기호</h3>
+          <p><kbd>Fn E</kbd> 또는 <kbd>Control ⌘ Space</kbd>로 문자 뷰어를 엽니다. 특수문자를 찾을 때도 유용합니다.</p>
+          <div class="windows-analogy"><span>Windows</span><kbd>Win .</kbd></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell" id="windows">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">02 · Windows</p>
+          <h2>창 정리는 이제 기본 기능으로</h2>
+        </div>
+        <p>macOS의 타일 정렬은 Windows Snap과 비슷하게 사용할 수 있습니다.</p>
+      </div>
+
+      <div class="shortcut-table searchable" data-tags="mac" data-search="snap 창 타일 최대화 fill windows left right">
+        <div class="table-head"><span>하려는 일</span><span>Windows</span><span>macOS</span></div>
+        <div class="table-row"><span>왼쪽 반쪽</span><kbd>Win ←</kbd><kbd>Fn Control ←</kbd></div>
+        <div class="table-row"><span>오른쪽 반쪽</span><kbd>Win →</kbd><kbd>Fn Control →</kbd></div>
+        <div class="table-row"><span>화면 채우기</span><span class="muted">최대화</span><kbd>Fn Control F</kbd></div>
+        <div class="table-row"><span>이전 크기 복원</span><span class="muted">복원</span><kbd>Fn Control R</kbd></div>
+      </div>
+      <div class="callout"><strong>주의</strong><span>“화면 채우기”와 메뉴 막대·Dock까지 숨기는 “전체 화면”은 다릅니다. Windows의 최대화 감각에는 화면 채우기가 더 가깝습니다.</span></div>
+    </section>
+
+    <section class="section shell" id="finder">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">03 · Finder</p>
+          <h2>파일 탐색기에서 가장 많이 헷갈리는 것</h2>
+        </div>
+        <p>Finder는 비슷해 보이지만 Enter, 잘라내기, 미리보기의 방식이 다릅니다.</p>
+      </div>
+
+      <div class="card-grid two">
+        <article class="info-card feature searchable" data-tags="mac dev" data-search="F2 이름 변경 Enter Return finder">
+          <span class="badge">필수</span>
+          <div class="icon-bubble">Aa</div>
+          <h3><kbd>Return</kbd>은 파일 이름 변경</h3>
+          <p>Finder에서 Return은 파일 실행이 아니라 이름 변경입니다. Windows의 <kbd>F2</kbd>와 같은 역할로 기억하면 됩니다.</p>
+        </article>
+
+        <article class="info-card feature searchable" data-tags="mac dev" data-search="Quick Look space 미리보기 preview explorer">
+          <span class="badge">강력 추천</span>
+          <div class="icon-bubble">◉</div>
+          <h3><kbd>Space</kbd>로 Quick Look</h3>
+          <p>파일을 선택하고 Space만 누르면 이미지·PDF·영상 등을 앱 실행 없이 확인할 수 있습니다. 다시 Space를 누르면 닫힙니다.</p>
+        </article>
+      </div>
+
+      <div class="shortcut-table searchable" data-tags="mac dev" data-search="finder file explorer 경로 폴더 휴지통 속성 이동 복사">
+        <div class="table-head"><span>하려는 일</span><span>Windows</span><span>Finder</span></div>
+        <div class="table-row"><span>이름 변경</span><kbd>F2</kbd><kbd>Return</kbd></div>
+        <div class="table-row"><span>상위 폴더</span><kbd>Alt ↑</kbd><kbd>⌘ ↑</kbd></div>
+        <div class="table-row"><span>새 폴더</span><kbd>Ctrl ⇧ N</kbd><kbd>⇧ ⌘ N</kbd></div>
+        <div class="table-row"><span>휴지통으로</span><kbd>Delete</kbd><kbd>⌘ Delete</kbd></div>
+        <div class="table-row"><span>정보 / 속성</span><kbd>Alt Enter</kbd><kbd>⌘ I</kbd></div>
+        <div class="table-row"><span>경로 직접 입력</span><span class="muted">주소창</span><kbd>⇧ ⌘ G</kbd></div>
+      </div>
+
+      <article class="recipe-card searchable" data-tags="mac dev" data-search="Ctrl X cut paste 파일 이동 option command v finder">
+        <div>
+          <p class="mini-label">Windows의 Ctrl+X → Ctrl+V가 필요하다면</p>
+          <h3>Finder 파일 이동은 “복사 후 이동 붙여넣기”</h3>
+          <p>파일을 <kbd>⌘ C</kbd>로 복사한 뒤 목적지에서 <kbd>⌥ ⌘ V</kbd>를 누르면 원본이 이동합니다.</p>
+        </div>
+        <div class="flow" aria-label="파일 이동 흐름">
+          <kbd>⌘ C</kbd><span>→</span><span class="folder">목적지</span><span>→</span><kbd>⌥ ⌘ V</kbd>
+        </div>
+      </article>
+    </section>
+
+    <section class="section shell" id="everyday">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">04 · Everyday</p>
+          <h2>일상 사용에서 체감 큰 설정</h2>
+        </div>
+        <p>키보드와 트랙패드는 기본 설정을 몇 가지 손보면 Windows에서 넘어왔을 때의 이질감이 크게 줄어듭니다.</p>
+      </div>
+
+      <div class="card-grid three">
+        <article class="info-card searchable" data-tags="mac" data-search="한영 전환 korean input control space caps lock">
+          <div class="icon-bubble">한</div>
+          <h3>한/영 전환</h3>
+          <p>입력 소스 전환은 기본적으로 <kbd>Control Space</kbd>를 쓸 수 있습니다. 설정에 따라 Caps Lock을 한/영 전환용으로 사용하는 것도 가능합니다.</p>
+          <div class="windows-analogy"><span>Windows</span><kbd>Win Space</kbd></div>
+        </article>
+        <article class="info-card searchable" data-tags="mac" data-search="right click 우클릭 trackpad two finger control click">
+          <div class="icon-bubble">↗</div>
+          <h3>우클릭은 두 손가락</h3>
+          <p>트랙패드의 두 손가락 클릭 또는 <kbd>Control + 클릭</kbd>이 Windows 우클릭에 해당합니다. ‘탭하여 클릭’도 설정에서 켤 수 있습니다.</p>
+        </article>
+        <article class="info-card searchable" data-tags="mac" data-search="trackpad gesture mission control desktop swipe 제스처">
+          <div class="icon-bubble">≋</div>
+          <h3>트랙패드 제스처 활용</h3>
+          <p>Mission Control, 데스크톱 전환, 페이지 뒤로/앞으로를 제스처에 맡기면 MacBook 사용성이 훨씬 자연스러워집니다.</p>
+        </article>
+        <article class="info-card searchable" data-tags="mac dev" data-search="command comma app settings preferences 설정">
+          <div class="icon-bubble">⚙</div>
+          <h3>앱 설정은 <kbd>⌘ ,</kbd></h3>
+          <p>많은 Mac 앱에서 <kbd>⌘ ,</kbd>가 현재 앱의 설정을 여는 관례로 쓰입니다. 메뉴를 찾는 시간을 줄여줍니다.</p>
+        </article>
+        <article class="info-card searchable" data-tags="mac dev" data-search="F1 F2 F5 F8 F12 function key fn IDE debug">
+          <div class="icon-bubble">F</div>
+          <h3>F1~F12를 많이 쓴다면</h3>
+          <p>IDE 디버깅 키를 자주 쓰면 시스템 설정에서 F1~F12를 표준 기능 키로 사용하도록 바꿔두는 편이 편합니다.</p>
+        </article>
+        <article class="info-card searchable" data-tags="mac" data-search="delete backspace forward delete fn delete">
+          <div class="icon-bubble">⌫</div>
+          <h3>Mac의 Delete는 Backspace 쪽</h3>
+          <p>Mac 키보드의 <kbd>Delete</kbd>는 왼쪽 문자를 지웁니다. Windows의 Delete처럼 오른쪽 문자를 지우려면 <kbd>Fn Delete</kbd>.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell" id="dev">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">05 · Developer</p>
+          <h2>개발자가 빨리 익히면 좋은 차이</h2>
+        </div>
+        <p>터미널의 Control 키 의미가 크기 때문에 Windows 습관을 무작정 전역 치환하지 않는 게 좋습니다.</p>
+      </div>
+
+      <div class="card-grid three">
+        <article class="info-card searchable" data-tags="dev mac" data-search="cursor 단어 이동 option arrow home end text editing">
+          <div class="icon-bubble">I⌁</div>
+          <h3>텍스트 커서 이동</h3>
+          <p><kbd>⌥ ←/→</kbd>는 단어 단위, <kbd>⌘ ←/→</kbd>는 줄 처음/끝입니다. 앞 단어 삭제는 <kbd>⌥ Delete</kbd>.</p>
+        </article>
+        <article class="info-card searchable" data-tags="dev mac" data-search="경로 path usr local opt library shift command g finder developer">
+          <div class="icon-bubble">/</div>
+          <h3>경로로 바로 이동</h3>
+          <p>Finder에서 <kbd>⇧ ⌘ G</kbd>를 누르고 <code>~/Library</code>, <code>/opt</code>, <code>/usr/local</code> 같은 경로를 바로 입력합니다.</p>
+        </article>
+        <article class="info-card searchable" data-tags="dev mac" data-search="강제 종료 task manager activity monitor option command esc">
+          <div class="icon-bubble">!</div>
+          <h3>먹통 앱 강제 종료</h3>
+          <p><kbd>⌥ ⌘ Esc</kbd>로 강제 종료 창을 엽니다. CPU·메모리까지 보려면 Spotlight에서 “활성 상태 보기”를 실행합니다.</p>
+        </article>
+      </div>
+
+      <div class="shortcut-table searchable" data-tags="dev mac" data-search="screenshot capture screen snipping tool">
+        <div class="table-head"><span>스크린샷</span><span>Windows</span><span>macOS</span></div>
+        <div class="table-row"><span>캡처 UI</span><kbd>Win ⇧ S</kbd><kbd>⇧ ⌘ 5</kbd></div>
+        <div class="table-row"><span>영역 캡처</span><kbd>Win ⇧ S</kbd><kbd>⇧ ⌘ 4</kbd></div>
+        <div class="table-row"><span>전체 화면</span><kbd>PrtSc</kbd><kbd>⇧ ⌘ 3</kbd></div>
+        <div class="table-row"><span>클립보드로 바로</span><span class="muted">캡처 후 복사</span><kbd>Control + 캡처 조합</kbd></div>
+      </div>
+    </section>
+
+    <section class="section shell" id="karabiner">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">06 · Karabiner-Elements 16.3.0</p>
+          <h2>Windows 키보드 감각은 필요한 만큼만 가져오기</h2>
+        </div>
+        <p>전역 Ctrl↔Command 교환보다 장치별·앱별로 좁혀서 적용하는 구성이 안정적입니다.</p>
+      </div>
+
+      <div class="recommendation-banner searchable" data-tags="karabiner dev" data-search="추천 preset windows keyboard keychron right alt caps lock">
+        <div>
+          <span class="badge dark">추천 프리셋</span>
+          <h3>Windows 개발자라면 이 정도부터</h3>
+        </div>
+        <div class="preset-list">
+          <div><kbd>Right Alt</kbd><span>→</span><strong>한/영 전환</strong></div>
+          <div><kbd>Caps Tap</kbd><span>→</span><strong>Esc</strong></div>
+          <div><kbd>Caps Hold</kbd><span>→</span><strong>Control</strong></div>
+          <div><kbd>Home / End</kbd><span>→</span><strong>⌘← / ⌘→</strong></div>
+          <div><kbd>Windows VM</kbd><span>→</span><strong>Command를 Ctrl처럼</strong></div>
+        </div>
+      </div>
+
+      <div class="card-grid two">
+        <article class="info-card searchable" data-tags="karabiner" data-search="외장 Windows 키보드 alt windows command option device specific">
+          <div class="icon-bubble">⌨</div>
+          <h3>외장 PC 키보드 배열 보정</h3>
+          <p>Windows 키보드에서 Space 옆 물리 키 감각을 맞추려면 외장 장치에만 <strong>Left Alt → Command</strong>, <strong>Left Windows → Option</strong>을 적용합니다.</p>
+          <div class="tip">MacBook 내장 키보드는 그대로 두고 장치별 설정을 권장합니다.</div>
+        </article>
+
+        <article class="info-card searchable" data-tags="karabiner" data-search="한영 korean input right alt control space select input source">
+          <div class="icon-bubble">가</div>
+          <h3>Right Alt를 한/영키로</h3>
+          <p><kbd>Right Alt</kbd> 단독 입력을 macOS 입력 소스 전환 단축키로 보내면 Windows 한/영키처럼 쓸 수 있습니다.</p>
+          <div class="tip">CJK 입력 소스는 직접 선택보다 시스템 단축키를 보내는 방식이 공식 문서에서도 권장됩니다.</div>
+        </article>
+
+        <article class="info-card searchable" data-tags="karabiner dev" data-search="caps escape control tap hold vim terminal to_if_alone to_if_held_down">
+          <div class="icon-bubble">⇪</div>
+          <h3>Caps Lock을 Tap / Hold로 분리</h3>
+          <p><strong>짧게</strong> 누르면 Esc, <strong>누른 채 다른 키</strong>를 쓰면 Control로 설정할 수 있습니다. Vim·터미널 사용자에게 특히 유용합니다.</p>
+          <div class="mini-flow"><kbd>Caps Tap</kbd><span>Esc</span><kbd>Caps Hold</kbd><span>Control</span></div>
+        </article>
+
+        <article class="info-card searchable" data-tags="karabiner dev" data-search="hyper key hjkl arrow layer command option control shift">
+          <div class="icon-bubble">H</div>
+          <h3>Caps를 Hyper 레이어로</h3>
+          <p><kbd>⌘⌥⌃⇧</kbd> 조합을 Hyper로 만들어 <kbd>Caps H/J/K/L</kbd>에 방향키, 앱 실행, 창 이동 등을 배치할 수 있습니다.</p>
+          <div class="mini-flow"><kbd>H</kbd><span>←</span><kbd>J</kbd><span>↓</span><kbd>K</kbd><span>↑</span><kbd>L</kbd><span>→</span></div>
+        </article>
+
+        <article class="info-card searchable" data-tags="karabiner dev" data-search="home end windows style command arrow shift selection">
+          <div class="icon-bubble">⇤</div>
+          <h3>Home / End를 Windows식으로</h3>
+          <p>풀사이즈 키보드의 <kbd>Home</kbd>을 <kbd>⌘ ←</kbd>, <kbd>End</kbd>를 <kbd>⌘ →</kbd>로 보내면 Windows 편집 습관을 상당 부분 유지할 수 있습니다.</p>
+        </article>
+
+        <article class="info-card searchable" data-tags="karabiner dev" data-search="app specific terminal ctrl command chrome finder not terminal frontmost application">
+          <div class="icon-bubble">◫</div>
+          <h3>Ctrl 단축키는 앱별로만</h3>
+          <p>GUI 앱에서만 <kbd>Ctrl C</kbd> → <kbd>⌘ C</kbd>처럼 바꾸고 Terminal에서는 원래 Control을 유지할 수 있습니다.</p>
+          <div class="tip warning">개발자는 Ctrl+C, Ctrl+D, Ctrl+Z가 터미널 의미를 가지므로 전역 Ctrl→Command는 비추천입니다.</div>
+        </article>
+
+        <article class="info-card searchable" data-tags="karabiner dev" data-search="Windows VM RDP Parallels VMware remote desktop command control">
+          <div class="icon-bubble">▣</div>
+          <h3>Windows VM / RDP에서만 키 교환</h3>
+          <p>Parallels·VMware·Windows 원격 앱이 앞에 있을 때만 Command를 Control로 바꾸면 복사/붙여넣기 근육 기억을 유지하기 쉽습니다.</p>
+        </article>
+
+        <article class="info-card searchable" data-tags="karabiner" data-search="EventViewer vendor product id device keyboard debug">
+          <div class="icon-bubble">⌁</div>
+          <h3>EventViewer로 실제 입력 확인</h3>
+          <p>특수키·한/영키·마우스 버튼이 실제로 어떤 key code를 보내는지 확인합니다. 장치의 Vendor/Product ID와 앱 Bundle ID 확인에도 씁니다.</p>
+        </article>
+      </div>
+
+      <div class="card-grid three compact-grid">
+        <article class="info-card searchable" data-tags="karabiner" data-search="profiles 프로필 development windows remote gaming">
+          <div class="icon-bubble">P</div>
+          <h3>프로필 분리</h3>
+          <p>Development / Windows Remote / Gaming처럼 프로필을 나누면 상황별 remap을 깔끔하게 관리할 수 있습니다.</p>
+        </article>
+        <article class="info-card searchable" data-tags="karabiner" data-search="mouse button 4 5 back forward 마우스 뒤로 앞으로">
+          <div class="icon-bubble">◁</div>
+          <h3>마우스 측면 버튼</h3>
+          <p>지원되는 pointing device 이벤트라면 Button 4/5를 뒤로·앞으로 같은 동작에 연결할 수 있습니다.</p>
+        </article>
+        <article class="info-card searchable" data-tags="karabiner" data-search="fn external keyboard limitation function key 하드웨어 제한">
+          <div class="icon-bubble">Fn</div>
+          <h3>외장 키보드 Fn 주의</h3>
+          <p>일부 비 Apple 키보드는 Fn을 하드웨어 내부에서 처리해 macOS에 이벤트를 보내지 않습니다. 이 경우 Karabiner도 Fn 자체를 remap할 수 없습니다.</p>
+        </article>
+      </div>
+
+      <div class="do-dont searchable" data-tags="karabiner dev" data-search="recommend do dont ctrl command global terminal">
+        <div class="do-card">
+          <span class="do-title">추천</span>
+          <ul>
+            <li>외장 키보드에만 배열 보정</li>
+            <li>Right Alt → 한/영</li>
+            <li>Caps Tap/Hold 또는 Hyper</li>
+            <li>VM·RDP처럼 앱 범위를 좁힌 remap</li>
+          </ul>
+        </div>
+        <div class="dont-card">
+          <span class="do-title">피하는 편이 좋은 것</span>
+          <ul>
+            <li>전역 Ctrl ↔ Command 교환</li>
+            <li>IDE keymap과 Karabiner 중복 remap</li>
+            <li>외장 키보드 Fn이 항상 감지될 것이라는 가정</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="cheatsheet">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">07 · Cheat sheet</p>
+          <h2>이 표만 저장해도 됩니다</h2>
+        </div>
+        <p>처음 일주일 동안 자주 쓰는 항목만 모았습니다.</p>
+      </div>
+      <div class="cheat-grid searchable" data-tags="mac dev" data-search="cheat sheet 단축키 요약">
+        <div class="cheat-item"><span>앱 전환</span><kbd>⌘ Tab</kbd><small>Alt + Tab</small></div>
+        <div class="cheat-item"><span>같은 앱 창</span><kbd>⌘ `</kbd><small>Mac 특유</small></div>
+        <div class="cheat-item"><span>Spotlight</span><kbd>⌘ Space</kbd><small>Win + S</small></div>
+        <div class="cheat-item"><span>앱 종료</span><kbd>⌘ Q</kbd><small>Alt + F4</small></div>
+        <div class="cheat-item"><span>파일 미리보기</span><kbd>Space</kbd><small>Quick Look</small></div>
+        <div class="cheat-item"><span>경로 이동</span><kbd>⇧ ⌘ G</kbd><small>주소창</small></div>
+        <div class="cheat-item"><span>영역 캡처</span><kbd>⇧ ⌘ 4</kbd><small>Win + Shift + S</small></div>
+        <div class="cheat-item"><span>화면 잠금</span><kbd>⌃ ⌘ Q</kbd><small>Win + L</small></div>
+      </div>
+    </section>
+
+    <section class="section shell sources" id="sources">
+      <div class="section-heading compact">
+        <div>
+          <p class="eyebrow">Sources</p>
+          <h2>공식 문서 기준</h2>
+        </div>
+        <p>2026년 9월 16일 확인. 앱·키보드 종류와 사용자 설정에 따라 일부 동작은 달라질 수 있습니다.</p>
+      </div>
+      <div class="source-list">
+        <a href="https://www.apple.com/kr/os/macos/" target="_blank" rel="noreferrer">Apple · macOS 27 Golden Gate</a>
+        <a href="https://support.apple.com/ko-kr/102650" target="_blank" rel="noreferrer">Apple · Mac 키보드 단축키</a>
+        <a href="https://support.apple.com/ko-kr/102646" target="_blank" rel="noreferrer">Apple · Mac에서 스크린샷 찍기</a>
+        <a href="https://support.apple.com/guide/mac-help/preview-a-file-mchlgtd_prev01/mac" target="_blank" rel="noreferrer">Apple · Quick Look</a>
+        <a href="https://karabiner-elements.pqrs.org/docs/releasenotes/" target="_blank" rel="noreferrer">Karabiner-Elements · Release notes</a>
+        <a href="https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/conditions/" target="_blank" rel="noreferrer">Karabiner-Elements · Conditions</a>
+      </div>
+    </section>
+
+    <section class="no-results shell" id="noResults" hidden>
+      <div class="empty-card">
+        <strong>검색 결과가 없습니다.</strong>
+        <p>다른 단축키나 기능 이름으로 검색해 보세요.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div><strong>Win → Mac Guide</strong><span>비공식 전환 가이드</span></div>
+      <a href="#top">맨 위로 ↑</a>
+    </div>
+  </footer>
+
+  <script>
+(() => {
+  const root = document.documentElement;
+  const themeToggle = document.querySelector('#themeToggle');
+  const searchInput = document.querySelector('#guideSearch');
+  const filterButtons = [...document.querySelectorAll('[data-filter]')];
+  const searchable = [...document.querySelectorAll('.searchable')];
+  const noResults = document.querySelector('#noResults');
+
+  const storedTheme = localStorage.getItem('mac-guide-theme');
+  if (storedTheme) {
+    root.dataset.theme = storedTheme;
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    root.dataset.theme = 'dark';
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('mac-guide-theme', next);
+  });
+
+  let activeFilter = 'all';
+
+  function normalize(value) {
+    return value.toLocaleLowerCase('ko-KR').replace(/\s+/g, ' ').trim();
+  }
+
+  function applyFilter() {
+    const query = normalize(searchInput.value);
+    let visibleCount = 0;
+
+    searchable.forEach((el) => {
+      const tags = (el.dataset.tags || '').split(/\s+/);
+      const haystack = normalize(`${el.textContent} ${el.dataset.search || ''}`);
+      const filterMatch = activeFilter === 'all' || tags.includes(activeFilter);
+      const searchMatch = !query || haystack.includes(query);
+      const visible = filterMatch && searchMatch;
+      el.classList.toggle('search-hidden', !visible);
+      if (visible) visibleCount += 1;
+    });
+
+    noResults.hidden = visibleCount > 0;
+  }
+
+  searchInput.addEventListener('input', applyFilter);
+
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      activeFilter = button.dataset.filter;
+      filterButtons.forEach((item) => item.classList.toggle('is-active', item === button));
+      applyFilter();
+    });
+  });
+})();
+
+</script>
+</body>
+</html>
