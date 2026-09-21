@@ -278,6 +278,35 @@ kbd {
 .bonus-live-example span { color: var(--muted); }
 
 
+
+.workflow-wide { display: grid; grid-template-columns: minmax(0, .82fr) minmax(360px, 1.18fr); gap: clamp(26px, 5vw, 60px); align-items: center; margin-top: 18px; padding: clamp(26px, 4vw, 40px); border: 1px solid var(--border); border-radius: var(--radius-xl); background: var(--surface); box-shadow: var(--shadow); }
+.workflow-wide h3 { margin: 10px 0 12px; font-size: clamp(24px, 3vw, 31px); letter-spacing: -.035em; }
+.workflow-wide-copy > p { margin: 0; color: var(--muted); line-height: 1.75; }
+.workflow-wide-steps { display: grid; gap: 10px; }
+.workflow-option { display: grid; grid-template-columns: 76px 1fr; gap: 14px; align-items: center; padding: 13px 15px; border-radius: 13px; background: var(--accent-soft); }
+.workflow-option strong { color: var(--accent); font-size: 13px; }
+.workflow-option span { color: var(--text); font-size: 13px; }
+.workflow-route { margin-top: 16px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+
+.developer-tools { margin-top: 24px; }
+.developer-tools-heading { margin-bottom: 16px; }
+.developer-tools-heading h3 { margin: 0 0 7px; font-size: 24px; letter-spacing: -.03em; }
+.developer-tools-heading p { margin: 0; color: var(--muted); }
+.tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.tool-card { padding: clamp(24px, 3vw, 32px); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow); }
+.tool-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.tool-card-head .icon-bubble { flex: 0 0 auto; }
+.tool-card h4 { margin: 0; font-size: 21px; letter-spacing: -.025em; }
+.tool-card-lead { margin: 0; color: var(--text); font-weight: 720; line-height: 1.7; }
+.tool-card-detail { margin: 8px 0 0; color: var(--muted); line-height: 1.72; }
+.tool-card .bonus-path { margin-top: 22px; }
+
+.bonus-card-wide { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, .8fr) minmax(360px, 1.2fr); gap: clamp(28px, 5vw, 60px); align-items: start; }
+.bonus-card-wide h4 { margin-top: 20px; }
+.bonus-wide-actions { display: grid; gap: 14px; }
+.bonus-wide-actions .bonus-path { margin-top: 0; padding-top: 0; border-top: 0; }
+.bonus-wide-actions .bonus-path + .bonus-path { padding-top: 18px; border-top: 1px solid var(--border); }
+
 .sources { padding-bottom: 70px; }
 .source-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .source-list a { padding: 14px 15px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); color: var(--muted); text-decoration: none; font-size: 13px; }
@@ -316,6 +345,7 @@ html[data-theme="dark"] .tip.warning { background: #382819; color: #e5b778; }
   .hero { padding-top: 60px; }
   .hero-grid { grid-template-columns: 1fr; gap: 30px; }
   .hero-card { transform: none; }
+  .workflow-wide, .bonus-card-wide { grid-template-columns: 1fr; }
   .section-heading { grid-template-columns: 1fr; gap: 10px; }
   .card-grid.three, .source-list { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .recommendation-banner { grid-template-columns: 1fr; }
@@ -335,7 +365,7 @@ html[data-theme="dark"] .tip.warning { background: #382819; color: #e5b778; }
   .section { padding-top: 54px; }
   .compare-grid { grid-template-columns: 1fr; }
   .equals { transform: rotate(90deg); justify-self: center; }
-  .card-grid.three, .card-grid.two, .source-list, .do-dont, .bonus-grid { grid-template-columns: 1fr; }
+  .card-grid.three, .card-grid.two, .source-list, .do-dont, .bonus-grid, .tool-grid { grid-template-columns: 1fr; }
   .table-head, .table-row { grid-template-columns: 1.05fr .9fr 1fr; padding-inline: 12px; }
   .recipe-card { align-items: flex-start; flex-direction: column; }
   .flow { justify-content: flex-start; }
@@ -563,6 +593,25 @@ html[data-theme="dark"] .tip.warning { background: #382819; color: #e5b778; }
           <kbd>⌘ C</kbd><span>→</span><span class="folder">목적지</span><span>→</span><kbd>⌥ ⌘ V</kbd>
         </div>
       </article>
+
+
+      <article class="workflow-wide searchable" id="finder-batch-rename" data-tags="mac dev" data-search="Finder 여러 파일 일괄 이름 변경 batch rename replace add format counter date">
+        <div class="workflow-wide-copy">
+          <span class="badge">여러 파일을 한 번에</span>
+          <h3>Finder에서 일괄 이름 변경</h3>
+          <p>
+            파일 여러 개의 이름에서 같은 문자를 찾아 바꾸거나,<br />
+            접두어·날짜·연속 번호를 한 번에 붙일 수 있습니다.
+          </p>
+          <p class="workflow-route">파일 여러 개 선택 → 우클릭 → <strong>이름 변경</strong></p>
+          <a class="bonus-source" href="https://support.apple.com/en-au/guide/mac-help/mchlp1144/mac" target="_blank" rel="noreferrer">Apple 공식 문서 ↗</a>
+        </div>
+        <div class="workflow-wide-steps" aria-label="일괄 이름 변경 방식">
+          <div class="workflow-option"><strong>텍스트 대치</strong><span><code>IMG_</code>를 <code>여행_</code>으로 교체</span></div>
+          <div class="workflow-option"><strong>텍스트 추가</strong><span>기존 이름 앞이나 뒤에 공통 문구 추가</span></div>
+          <div class="workflow-option"><strong>포맷 변경</strong><span>이름 + 인덱스·카운터·날짜로 정렬</span></div>
+        </div>
+      </article>
     </section>
 
     <section class="section shell" id="everyday">
@@ -642,6 +691,31 @@ html[data-theme="dark"] .tip.warning { background: #382819; color: #e5b778; }
         <div class="table-row"><span>영역 캡처</span><kbd>Win ⇧ S</kbd><kbd>⇧ ⌘ 4</kbd></div>
         <div class="table-row"><span>전체 화면</span><kbd>PrtSc</kbd><kbd>⇧ ⌘ 3</kbd></div>
         <div class="table-row"><span>클립보드로 바로</span><span class="muted">캡처 후 복사</span><kbd>Control + 캡처 조합</kbd></div>
+      </div>
+
+
+      <div class="developer-tools">
+        <div class="developer-tools-heading">
+          <h3>개발 흐름을 줄이는 기본 기능</h3>
+          <p>경로 복사와 앱 메뉴 단축키는 Karabiner나 별도 도구를 쓰기 전에 먼저 확인할 기능입니다.</p>
+        </div>
+        <div class="tool-grid">
+          <article class="tool-card searchable" data-tags="dev mac" data-search="Finder 파일 경로 pathname 복사 Option 우클릭 Terminal IDE">
+            <div class="tool-card-head"><div class="icon-bubble">/</div><h4>파일 경로 그대로 복사</h4></div>
+            <p class="tool-card-lead">Finder에 있는 파일·폴더의 전체 경로를 클립보드로 복사합니다.</p>
+            <p class="tool-card-detail">터미널 명령이나 IDE 설정에 경로를 직접 입력할 때 오타와 폴더 이동을 줄일 수 있습니다.</p>
+            <div class="bonus-path"><span>사용법</span><code>파일 우클릭 → ⌥ 누르기 → “경로 이름으로 복사”</code></div>
+            <a class="bonus-source" href="https://support.apple.com/en-ca/guide/terminal/apd3cf6fe02-3ec8-48f1-951f-866e52955fc8/mac" target="_blank" rel="noreferrer">Apple 공식 문서 ↗</a>
+          </article>
+
+          <article class="tool-card searchable" data-tags="dev mac" data-search="앱 메뉴 사용자 지정 단축키 keyboard shortcut menu command 시스템 설정">
+            <div class="tool-card-head"><div class="icon-bubble">⌘</div><h4>앱 메뉴에 단축키 직접 지정</h4></div>
+            <p class="tool-card-lead">메뉴에는 있지만 단축키가 없는 명령에 원하는 키 조합을 연결합니다.</p>
+            <p class="tool-card-detail">앱의 메뉴 이름을 정확히 입력해야 하며, 기존 단축키와 충돌하면 새 조합이 동작하지 않습니다.</p>
+            <div class="bonus-path"><span>설정 경로</span><code>시스템 설정 → 키보드 → 키보드 단축키 → 앱 단축키</code></div>
+            <a class="bonus-source" href="https://support.apple.com/en-sa/guide/mac-help/mchlp2262/mac" target="_blank" rel="noreferrer">Apple 공식 문서 ↗</a>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -913,6 +987,22 @@ html[data-theme="dark"] .tip.warning { background: #382819; color: #e5b778; }
               <p class="bonus-note">경계가 흐리거나 배경과 색이 비슷하면 결과를 직접 확인해야 합니다.</p>
               <a class="bonus-source" href="https://support.apple.com/guide/preview/welcome/mac" target="_blank" rel="noreferrer">Apple 공식 문서 ↗</a>
             </article>
+
+
+            <article class="bonus-card bonus-card-wide searchable" data-tags="mac" data-search="모든 문서 PDF 저장 인쇄 프린트 암호 비밀번호 권한 보호 Preview">
+              <div>
+                <div class="bonus-card-top"><span class="bonus-index">05 · SAVE &amp; PROTECT</span><span class="bonus-icon" aria-hidden="true">🔒</span></div>
+                <h4>모든 문서를 PDF로 저장·보호</h4>
+                <p class="bonus-card-lead">인쇄할 수 있는 문서는 대부분 PDF 파일로 저장할 수 있습니다.</p>
+                <p class="bonus-card-detail">완성된 PDF에는 열기 암호와 인쇄·복사·주석 권한을 따로 설정할 수 있습니다.</p>
+              </div>
+              <div class="bonus-wide-actions">
+                <div class="bonus-path"><span>문서를 PDF로 저장</span><code>파일 → 프린트 → PDF → PDF로 저장</code></div>
+                <div class="bonus-path"><span>암호와 권한 설정</span><code>Preview → 파일 → 내보내기 → 권한</code></div>
+                <p class="bonus-note">암호를 잊으면 문서를 열거나 권한을 변경하지 못할 수 있습니다. 원본과 보호본을 구분해 보관하세요.</p>
+                <div><a class="bonus-source" href="https://support.apple.com/en-lamr/guide/mac-help/mchlp1531" target="_blank" rel="noreferrer">PDF 저장 공식 문서 ↗</a><br /><a class="bonus-source" href="https://support.apple.com/en-ie/guide/preview/prvw587dd90f/mac" target="_blank" rel="noreferrer">PDF 보호 공식 문서 ↗</a></div>
+              </div>
+            </article>
           </div>
         </section>
 
@@ -923,7 +1013,7 @@ html[data-theme="dark"] .tip.warning { background: #382819; color: #e5b778; }
           </div>
           <div class="bonus-grid">
             <article class="bonus-card searchable" data-tags="mac" data-search="Spotlight 계산 단위 환율 온도 변환 수식">
-              <div class="bonus-card-top"><span class="bonus-index">05 · SPOTLIGHT</span><span class="bonus-icon" aria-hidden="true">=</span></div>
+              <div class="bonus-card-top"><span class="bonus-index">06 · SPOTLIGHT</span><span class="bonus-icon" aria-hidden="true">=</span></div>
               <h4>계산·단위 변환을 검색창에서</h4>
               <p class="bonus-card-lead">계산기 앱 없이 수식, 온도, 길이, 무게와 시간대를 변환합니다.</p>
               <p class="bonus-card-detail">Spotlight에 값을 그대로 입력하면 다른 앱으로 이동하지 않고 결과를 확인할 수 있습니다.</p>
@@ -933,7 +1023,7 @@ html[data-theme="dark"] .tip.warning { background: #382819; color: #e5b778; }
             </article>
 
             <article class="bonus-card searchable" data-tags="mac dev" data-search="텍스트 대치 자동 완성 반복 문구 이메일 주소">
-              <div class="bonus-card-top"><span class="bonus-index">06 · TEXT</span><span class="bonus-icon" aria-hidden="true">Aa</span></div>
+              <div class="bonus-card-top"><span class="bonus-index">07 · TEXT</span><span class="bonus-icon" aria-hidden="true">Aa</span></div>
               <h4>반복 문구 자동 완성</h4>
               <p class="bonus-card-lead">짧은 키워드를 이메일 주소·회사 주소·자주 쓰는 문장으로 바꿉니다.</p>
               <p class="bonus-card-detail">예를 들어 <code>@@</code>만 입력해 전체 이메일 주소를 완성하도록 설정할 수 있습니다.</p>
@@ -943,7 +1033,7 @@ html[data-theme="dark"] .tip.warning { background: #382819; color: #e5b778; }
             </article>
 
             <article class="bonus-card searchable" data-tags="mac" data-search="Hot Corners 핫 코너 화면 모서리 잠금 데스크탑 Quick Note">
-              <div class="bonus-card-top"><span class="bonus-index">07 · DESKTOP</span><span class="bonus-icon" aria-hidden="true">⌞</span></div>
+              <div class="bonus-card-top"><span class="bonus-index">08 · DESKTOP</span><span class="bonus-icon" aria-hidden="true">⌞</span></div>
               <h4>화면 모서리를 단축키처럼</h4>
               <p class="bonus-card-lead">포인터를 화면 모서리에 대면 잠금·데스크탑 보기·Quick Note 등을 실행합니다.</p>
               <p class="bonus-card-detail">키보드에 손을 옮기지 않고 자주 쓰는 화면 동작을 호출할 수 있습니다.</p>
@@ -952,13 +1042,41 @@ html[data-theme="dark"] .tip.warning { background: #382819; color: #e5b778; }
               <a class="bonus-source" href="https://support.apple.com/en-euro/guide/mac-help/mchlp3000/mac" target="_blank" rel="noreferrer">Apple 공식 문서 ↗</a>
             </article>
             <article class="bonus-card searchable" data-tags="mac" data-search="Finder 태그 스마트 폴더 자동 분류 파일 정리">
-              <div class="bonus-card-top"><span class="bonus-index">08 · ORGANIZE</span><span class="bonus-icon" aria-hidden="true">#</span></div>
+              <div class="bonus-card-top"><span class="bonus-index">09 · ORGANIZE</span><span class="bonus-icon" aria-hidden="true">#</span></div>
               <h4>태그와 스마트 폴더로 자동 분류</h4>
               <p class="bonus-card-lead">한 파일에 여러 태그를 붙이고 조건에 맞는 파일을 스마트 폴더로 모읍니다.</p>
               <p class="bonus-card-detail">원본 위치를 유지하면서 프로젝트·파일 종류·수정일 기준으로 필요한 항목만 다시 볼 수 있습니다.</p>
               <div class="bonus-path"><span>시작 방법</span><code>파일 우클릭 → 태그 · Finder 파일 메뉴 → 새로운 스마트 폴더</code></div>
               <p class="bonus-note">스마트 폴더는 파일을 이동하거나 복제하지 않고 검색 결과만 보여줍니다.</p>
               <a class="bonus-source" href="https://support.apple.com/guide/mac-help/organize-your-files-in-the-finder-mchle9f0a1b2/27/mac/27" target="_blank" rel="noreferrer">Apple 공식 문서 ↗</a>
+            </article>
+          </div>
+        </section>
+
+        <section class="bonus-group" aria-labelledby="bonus-advanced-title">
+          <div class="bonus-group-heading">
+            <h3 id="bonus-advanced-title">고급 도구</h3>
+            <p>반복 작업을 자동화하거나 화면의 색상값을 정확히 확인할 때 쓰는 기본 앱입니다.</p>
+          </div>
+          <div class="bonus-grid">
+            <article class="bonus-card searchable" data-tags="mac dev" data-search="Shortcuts 단축어 자동화 workflow 반복 작업 action">
+              <div class="bonus-card-top"><span class="bonus-index">10 · SHORTCUTS</span><span class="bonus-icon" aria-hidden="true">↯</span></div>
+              <h4>반복 작업을 하나의 실행으로</h4>
+              <p class="bonus-card-lead">단축어 앱에서 여러 동작을 순서대로 연결해 한 번에 실행합니다.</p>
+              <p class="bonus-card-detail">파일 선택·이름 변경·이미지 변환처럼 반복되는 흐름부터 작게 만들어 테스트하는 게 좋습니다.</p>
+              <div class="bonus-path"><span>시작 방법</span><code>단축어 앱 → + → 동작 추가 → ▶︎로 테스트</code></div>
+              <p class="bonus-note">사용할 수 있는 동작은 앱 지원 여부와 시스템 설정에 따라 달라집니다.</p>
+              <a class="bonus-source" href="https://support.apple.com/en-au/guide/shortcuts-mac/apd84c576f8c/mac" target="_blank" rel="noreferrer">Apple 공식 문서 ↗</a>
+            </article>
+
+            <article class="bonus-card searchable" data-tags="mac dev" data-search="Digital Color Meter 디지털 색상 측정기 픽셀 RGB 색상값 복사 프론트엔드 디자인">
+              <div class="bonus-card-top"><span class="bonus-index">11 · COLOR</span><span class="bonus-icon" aria-hidden="true">◉</span></div>
+              <h4>화면의 색상값 바로 추출</h4>
+              <p class="bonus-card-lead">디지털 색상 측정기로 포인터 아래 픽셀의 색상값을 확인합니다.</p>
+              <p class="bonus-card-detail">표시 형식과 측정 범위를 바꾸고, 색상값을 텍스트나 이미지로 복사할 수 있습니다.</p>
+              <div class="bonus-path"><span>복사 단축키</span><code>색상값 텍스트 복사 ⇧ ⌘ C · 이미지 복사 ⌥ ⌘ C</code></div>
+              <p class="bonus-note">측정 범위에 여러 픽셀이 들어가면 해당 픽셀들의 색상값이 평균 처리됩니다.</p>
+              <a class="bonus-source" href="https://support.apple.com/en-lamr/guide/digital-color-meter/welcome/mac" target="_blank" rel="noreferrer">Apple 공식 문서 ↗</a>
             </article>
           </div>
         </section>
@@ -1012,7 +1130,7 @@ html[data-theme="dark"] .tip.warning { background: #382819; color: #e5b778; }
           <p class="eyebrow">Sources</p>
           <h2>공식 문서 기준</h2>
         </div>
-        <p>2026년 9월 16일 확인. 앱·키보드 종류와 사용자 설정에 따라 일부 동작은 달라질 수 있습니다.</p>
+        <p>2026년 9월 21일 확인. 앱·키보드 종류와 사용자 설정에 따라 일부 동작은 달라질 수 있습니다.</p>
       </div>
       <div class="source-list">
         <a href="https://www.apple.com/kr/os/macos/" target="_blank" rel="noreferrer">Apple · macOS 27 Golden Gate</a>
